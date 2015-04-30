@@ -11,7 +11,9 @@ you want to deploy.
 
 Then run the playbook, like this:
 
-	ansible-playbook -i hosts site.yml
+```
+$ ansible-playbook -s -i hosts site.yml
+```
 
 The playbooks will configure MySQL, WordPress, Nginx, and PHP-FPM. When the run
 is complete, you can hit access server to begin the WordPress configuration.

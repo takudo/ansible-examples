@@ -1,8 +1,9 @@
 ---
 # Which version of WordPress to deploy
 wp_version: 4.2.1
-wp_src_url:https://ja.wordpress.org/wordpress-4.2.1-ja.tar.gz
+wp_src_url: https://ja.wordpress.org/wordpress-4.2.1-ja.tar.gz
 wp_sha256sum: 9f97a30f794907e8cf7b7d4db4c5d19aa8b1b2c90ec4938de0d78d45f3b55d37
+wp_base_path: /vagrant
 
 # These are the WordPress database settings
 wp_db_name: wordpress 

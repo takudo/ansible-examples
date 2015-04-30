@@ -1,4 +1,8 @@
 ---
+- name: download mysql repo
+  get_url: url=http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm
+           dest=/tmp/
+
 - name: mysql repo install
   yum: name=/tmp/mysql-community-release-el6-5.noarch.rpm state=present
 
