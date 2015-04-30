@@ -2,17 +2,18 @@
 - name: Download WordPress
   # get_url: url=http://wordpress.org/wordpress-{{ wp_version }}.tar.gz dest=/srv/wordpress-{{ wp_version }}.tar.gz
   #          sha256sum="{{ wp_sha256sum }}"
-  get_url: url={{ wp_url }} dest=/vagrant/wordpress-{{ wp_version }}.tar.gz
+  get_url: url={{ wp_url }} dest={{ wp_base_path }}/wordpress-{{ wp_version }}.tar.gz
            sha256sum="{{ wp_sha256sum }}"
 
 - name: Extract archive
-  command: chdir=/vagrant/ /bin/tar xvf wordpress-{{ wp_version }}.tar.gz creates=/vagrant/wordpress
+  command: chdir={{ wp_base_path }}/ /bin/tar xvf wordpress-{{ wp_version }}.tar.gz 
+           creates={{ wp_base_path }}/wordpress
 
 - name: Add group "wordpress"
   group: name=wordpress
 
 - name: Add user "wordpress"
-  user: name=wordpress group=wordpress home=/vagrant/wordpress/
+  user: name=wordpress group=wordpress home={{ wp_base_path }}/wordpress/
 
 - name: Fetch random salts for WordPress config
   local_action: command curl https://api.wordpress.org/secret-key/1.1/salt/
@@ -26,14 +27,14 @@
   mysql_user: name={{ wp_db_user }} password={{ wp_db_password }} priv={{ wp_db_name }}.*:ALL host='localhost' state=present
 
 - name: Copy WordPress config file
-  template: src=wp-config.php dest=/home/vagrant/wp-config.php
+  template: src=wp-config.php dest=/tmp/wp-config.php
 
 - name: Move WordPress config file
-  command: mv /home/vagrant/wp-config.php /vagrant/wordpress/wp-config.php
-           creates=/vagrant/wordpress/wp-config.php
+  command: mv /tmp/wp-config.php {{ wp_base_path }}/wordpress/wp-config.php
+           creates={{ wp_base_path }}/wordpress/wp-config.php
 
 - name: Change ownership of WordPress installation
-  file: path=/vagrant/wordpress/ 
+  file: path={{ wp_base_path }}/wordpress/ 
         owner=wordpress 
         group=wordpress 
         state=directory 
